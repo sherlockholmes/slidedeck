@@ -1,0 +1,314 @@
+<!--
+slidedeck: A modification of the Google IO 2012 HTML5 slide template
+URL: https://github.com/rmcgibbo/slidedeck
+
+Based on https://github.com/francescolaffi/elastic-google-io-slides, and
+ultimately:
+
+Google IO 2012 HTML5 Slide Template
+Authors: Eric Bidelman <ebidel@gmail.com>
+         Luke Mahe <lukem@google.com>
+URL: https://code.google.com/p/io-2012-slides
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <title> Change Log MongoDB 3.0</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+   <link rel="shortcut icon" href=" https://media.mongodb.org/favicon.ico "/> 
+  <link rel="stylesheet" media="all" href="theme/css/default.css">
+  <link rel="stylesheet" media="all" href="theme/css/custom.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+
+  <!-- MathJax support  -->
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    showProcessingMessages: false,
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true
+    },
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+</head>
+
+<body style="opacity: 0">
+
+<slides class="layout-widescreen">
+<slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+
+    <h1> Change Log MongoDB 3.0</h1>
+    <h2> WiredTiger y más</h2>
+    <p> Raul Hugo<br/> Otro maestro del tiempo.</p>
+  </hgroup>
+</slide>
+
+
+<slide class="img-top-center" >
+  
+    <hgroup>
+      <h2>Issues comunes en MongoDB 2.x</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><p><img height=250 src=figures/writelock.jpg /></p>
+<p>MongoDB 2.x tuvo los siguientes problemas comunes:</p>
+<ul class="build">
+<li>Global Write lock -&gt; Bloqueo Global de Escritura. </li>
+<li>Preallocation white spaces. Reserva de Espacios en Blanco. </li>
+<li>Mongo Credentials Encriptamiento Inseguro.</li>
+</ul></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Wired Tiger</h2>
+      <h3>El Nuevo Motor</h3>
+    </hgroup>
+    <article ><ul>
+<li>Nuevo Motor añadido en Mongodb 3.0
+Fetures:</li>
+<li>Locking a nivel de documento ya no global.</li>
+<li>Tres Niveles de Compresion por Defecto.</li>
+<li>Corrige alguna falencias de MMAPv1</li>
+</ul>
+<footer class="source"> https://www.youtube.com/watch?feature=player_embedded&v=O9TGqK3FBX8 </footer></article>
+ 
+</slide>
+
+<slide class="segue dark nobackground" >
+  
+    <!-- <aside class="gdbar"><img src="images/google_developers_icon_128.png"></aside> -->
+    <hgroup class="auto-fadein">
+      <h2>Credenciales de MongoDB</h2>
+      <h3>El nuevo SCRAM-SHA</h3>
+    </hgroup>
+  
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Autenticación</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><p>Hasta la version 2.6 mongodb usaba autenticacion basada en un encriptamiento propio llamado mongo credentials.</p>
+<pre class="prettyprint" data-lang="json">
+{
+    "_id" : "admin.usr_admin_mdb",
+    "user" : "usr_admin_mdb",
+    "db" : "admin",
+    "credentials" : {
+<b>     "SCRAM-SHA-1" : { </b>
+            "iterationCount" : 10000,
+            "salt" : "C/3yWPKoIhr8mvRPFcy32==",
+            "storedKey" : "ZIU0xkE2MMukq0JD6564g4LhmGEP6E=",
+            "serverKey" : "uOdH8Jp7MTkMgsi45w5MkI20u+yOs="
+        }
+    },
+    "roles" : [
+        {
+            "role" : "root",
+            "db" : "admin"
+        }
+    ]
+}
+</pre></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Autenticación</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><p>Hasta la version 2.6 mongodb usaba autenticacion basada en un encriptamiento propio llamado mongo credentials.</p>
+<pre class="prettyprint" data-lang="json">
+{
+    "_id" : "admin.usr_admin_mdb",
+    "user" : "usr_admin_mdb",
+    "db" : "admin",
+    "credentials" : {
+<b>     "MONGODB-CR" : "2f6d476968bb3aca98e4336a936d5520"  </b>
+    },
+    "roles" : [
+        {
+            "role" : "root",
+            "db" : "admin"
+        }
+    ]
+}
+
+
+
+</pre></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Compresion de Indices</h2>
+      <h3>storage.wiredTiger.indexConfig.prefixCompression</h3>
+    </hgroup>
+    <article ><ul>
+<li>Donde se guardan los indices de mongodb? </li>
+<li>En RAM</li>
+<li>Si los indices se comprimen que estamos ahorrando?</li>
+<li>Obviamente RAM</li>
+</ul>
+<footer class="source"> https://docs.mongodb.org/v3.0/reference/configuration-options/#storage.wiredTiger.indexConfig.prefixCompression </footer></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>YAML is better</h2>
+      <h3>Nuevo archivo de configuracion.</h3>
+    </hgroup>
+    <article ><p>Antes
+<pre class="prettyprint" data-lang="bash">
+storageEngine=wiredTiger
+logpath=/var/log/mongodb/mongod.log
+logappend=true
+fork=true
+port=27017
+dbpath=/var/lib/mongo/
+pidfilepath=/var/run/mongodb/mongod.pid
+bindip=127.0.0.1
+nojournal=true
+cpu=true
+</pre></p></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>YAML is better</h2>
+      <h3>Nuevo archivo de configuracion.</h3>
+    </hgroup>
+    <article ><p>Despues
+<pre class="prettyprint" data-lang="yaml">
+systemLog:
+   destination: file
+   path: "/var/log/mongodb/mongod.log"
+   logAppend: true
+storage:
+   wiredTiger:
+      engineConfig:
+         cacheSizeGB: <number>
+      collectionConfig:
+         blockCompressor: <string>
+      indexConfig:
+         prefixCompression: <boolean>
+</pre></p></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Compatibilidad</h2>
+      <h3>PHP Driver</h3>
+    </hgroup>
+    <article ><p><img height=300 src=figures/php1.png /></p>
+<footer class="source"> http://docs.mongodb.org/ecosystem/drivers/driver-compatibility-reference/ </footer></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Compatibilidad</h2>
+      <h3>PHP Lenguaje</h3>
+    </hgroup>
+    <article ><p><img height=300 src=figures/php2.png /></p>
+<footer class="source"> http://docs.mongodb.org/ecosystem/drivers/driver-compatibility-reference/ </footer></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Compatibilidad</h2>
+      <h3>NET/C# Driver</h3>
+    </hgroup>
+    <article ><p><img height=300 src=figures/net1.png /></p>
+<footer class="source"> http://docs.mongodb.org/ecosystem/drivers/driver-compatibility-reference/ </footer></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Compatibilidad</h2>
+      <h3>NET/C# Lenguaje</h3>
+    </hgroup>
+    <article ><p><img height=300 src=figures/net2.png /></p>
+<footer class="source"> http://docs.mongodb.org/ecosystem/drivers/driver-compatibility-reference/ </footer></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>MongoDB University</h2>
+      <h3>Cursos para todos.</h3>
+    </hgroup>
+    <article ><p><img height=450 src=figures/univ.png /></p>
+<footer class="source"> http://university.mongodb.org </footer></article>
+ 
+</slide>
+
+
+<slide class="thank-you-slide segue nobackground">
+  <!-- <aside class="gdbar right"><img src="images/google_developers_icon_128.png"></aside> -->
+  <article class="flexbox vleft auto-fadein">
+    <h2> Gracias totales.</h2>
+    <p> MongoDB Peru - AWS PERU</p>
+  </article>
+  <p data-config-contact class="auto-fadein"> <span>Sitio Web</span> <a href="http://aws.pe/">aws.pe</a><br/> <span>Github</span> <a href="http://github.com/sherlockholmes">sherlockholmes</a></p>
+  </p>
+</slide>
+
+<slide class="backdrop"></slide>
+
+</slides>
+
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-XXXXXXXX-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
